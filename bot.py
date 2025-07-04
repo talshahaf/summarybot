@@ -20,7 +20,7 @@ creds = json.load(open('creds.json', 'r'))
 OPENAI_API_KEY = creds['openai']
 TELEGRAM_BOT_TOKEN = creds['telegram']
 
-NO_GPT = True #fake response
+NO_GPT = False #True means fake response
 MODEL = 'gpt-4.1-mini' #'gpt-4o'
 TOKEN_LIMIT = 150000
 

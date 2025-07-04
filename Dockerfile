@@ -15,4 +15,4 @@ RUN python3 -m pip install --upgrade python-dateutil openai tiktoken python-tele
 RUN git clone https://github.com/talshahaf/summarybot.git .
 
 COPY creds.json .
-CMD ["python3", "bot.py"]
+CMD ["sh", "-c", "git pull origin main; exec python3 bot.py"]

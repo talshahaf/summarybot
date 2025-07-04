@@ -323,8 +323,11 @@ async def file_handler(update: Update, context: ContextTypes.DEFAULT_TYPE) -> in
             #zip
             with zipfile.ZipFile(io.BytesIO(data), 'r') as zh:
                 for f in zh.namelist():
+                    if not f.lower().endswith('.txt'):
+                        continue
                     name = find_chat_name(f)
                     if name and not chat_name:
+                        #take first
                         chat_name = name
                     with zh.open(f, 'r') as fh:
                         decoded_data += '\n' + fh.read().decode('utf8', errors='ignore')

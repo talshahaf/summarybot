@@ -72,7 +72,7 @@ async def start(update: Update, context: CallbackContext) -> int :
     await update.message.reply_text('Welcome! send an exported conversation or type /help')
     
 async def help_display(update: Update, context: CallbackContext) -> int :
-    msg = '''This bot summarizes conversations, please send a zip/??? file to summarize.
+    msg = '''This bot summarizes conversations, please send a zip/txt file to summarize.
 
 Configuration commands available:
     /time - set the time window to summarize

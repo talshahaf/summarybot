@@ -12,6 +12,7 @@ RUN apt update && apt install -y --no-install-recommends \
     && rm -rf /var/lib/apt/lists/*
 
 RUN python3 -m pip install --upgrade python-dateutil openai tiktoken python-telegram-bot --break-system-packages
+RUN git clone https://github.com/talshahaf/summarybot.git .
 
-COPY bot.py creds.json .
+COPY creds.json .
 CMD ["python3", "bot.py"]

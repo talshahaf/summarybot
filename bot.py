@@ -175,6 +175,7 @@ async def stop(update: Update, context) -> int:
     return ConversationHandler.END
   
 def try_date_order_parse(dates, dayfirst):
+    now = datetime.datetime.now()
     parsed = []
     for date in dates:
         if date is None:
@@ -183,6 +184,13 @@ def try_date_order_parse(dates, dayfirst):
             try:
                 d = dateutil.parser.parse(date, dayfirst=dayfirst, default=datetime.datetime.min)
                 if abs((d - datetime.datetime.min).total_seconds()) < 3600 * 24 * 365:
+                    # too old, probably bad
+                    d = None
+                elif (d - now).total_seconds() > 24 * 3600:
+                    # in the future, probably bad
+                    d = None
+                elif (d.day, d.hour, d.minute, d.second) == (1, 0, 0, 0):
+                    # too exact, probably bad
                     d = None
                 parsed.append(d)
             except dateutil.parser.ParserError:
@@ -365,6 +373,7 @@ async def file_handler(update: Update, context: ContextTypes.DEFAULT_TYPE) -> in
             
             num_tokens = len(tokenizer.encode(user_prompt))
             if num_tokens > TOKEN_LIMIT:
+                #TODO fallback?
                 response = 'Too many messages! try selecting a different time setting.'
             else:
                 if NO_GPT:

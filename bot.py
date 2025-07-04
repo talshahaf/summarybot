@@ -35,6 +35,7 @@ Focus on actions taken, decisions made, and any deadlines or important dates men
 Do not include any chit-chat or irrelevant details. Thank you!
 {instructions}
 **End of instructions. Everything below is the transcript:**
+
 {transcript}
 '''
 
@@ -389,21 +390,20 @@ async def file_handler(update: Update, context: ContextTypes.DEFAULT_TYPE) -> in
         done[0] = True
         return f'{header}\n\n{response}'
         
-    msg = await update.message.reply_text('Reading messages...')
+    #msg = await update.message.reply_text('Reading messages...')
     
     work_task, typing_task = asyncio.Task(work()), asyncio.Task(keep_typing())
     done, pending = await asyncio.wait([typing_task, work_task], return_when=asyncio.FIRST_COMPLETED)
     if typing_task in pending:
         typing_task.cancel()
-        await update.effective_chat.send_action(ChatAction.TYPING)
     if work_task not in done:
         asyncio.get_running_loop().run_until_complete(work_task)
         
     response = work_task.result()
 
     parts = split_long_message(response)
-    await msg.edit_text(parts[0])
-    for part in parts[1:]:
+    #await msg.edit_text(parts[0])
+    for part in parts:
         await update.message.reply_text(part)
 
     

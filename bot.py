@@ -365,8 +365,6 @@ async def file_handler(update: Update, context: ContextTypes.DEFAULT_TYPE) -> in
             
         decoded_data, latest_date = parse_and_filter(decoded_data, time_cut)
         decoded_data = decoded_data.strip()
-        context.chat_data['last_seen_date'][chat_name] = min(datetime.datetime.now(), latest_date)
-        context.chat_data['last_seen_date'] = context.chat_data['last_seen_date']
         
         if decoded_data:
             user_prompt = build_user_prompt(instructions, decoded_data)
@@ -376,6 +374,9 @@ async def file_handler(update: Update, context: ContextTypes.DEFAULT_TYPE) -> in
                 #TODO fallback?
                 response = 'Too many messages! try selecting a different time setting.'
             else:
+                context.chat_data['last_seen_date'][chat_name] = min(datetime.datetime.now(), latest_date)
+                context.chat_data['last_seen_date'] = context.chat_data['last_seen_date']
+        
                 if NO_GPT:
                     response = 'Yes I am GPT'
                 else:
